@@ -11,4 +11,5 @@ public interface CustomerRepository {
     Optional<Customer> findByPhoneNum(String phoneNum);
     Page<Customer> findAll(Specification<Customer> spec, Pageable pageable);
     Customer save(Customer customer);
+    long count();
 }

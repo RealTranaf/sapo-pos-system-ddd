@@ -2,8 +2,6 @@ package com.sapo.customer.infrastructure;
 
 import com.sapo.customer.domain.model.Customer;
 import com.sapo.customer.domain.model.Gender;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.JoinType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -20,9 +18,9 @@ public class CustomerSpecification {
             String pattern = "%" + keyword.toLowerCase() + "%";
 
             return cb.or(
-                    cb.like(cb.lower(root.get("name")), pattern),
+                    cb.like(root.get("name"), pattern),
                     cb.like(root.get("phoneNum"), pattern),
-                    cb.like(cb.lower(root.get("note")), pattern)
+                    cb.like(root.get("note"), pattern)
             );
         };
     }

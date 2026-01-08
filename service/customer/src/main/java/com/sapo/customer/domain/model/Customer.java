@@ -1,14 +1,9 @@
 package com.sapo.customer.domain.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "customers")
@@ -20,20 +15,18 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, length = 40)
     private String name;
 
-    @Column(nullable = false, unique = true, length = 12)
     private String phoneNum;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column(name = "created_at", updatable = false)
     private Instant createdOn;
 
+    private Instant modifiedOn;
+
     @Lob
-    @Column(columnDefinition = "TEXT")
     private String note;
 
     private Instant lastPurchaseDate;
@@ -47,17 +40,19 @@ public class Customer {
     private Customer(String name, PhoneNumber phoneNumber, Gender gender, String note) {
         validateName(name);
         this.name = name.trim();
-        this.phoneNum = phoneNumber.value();
+        this.phoneNum = phoneNumber.getValue();
         this.gender = gender == null ? Gender.NaN : gender;
         this.note = note;
+        this.createdOn = Instant.now();
     }
 
     public void update(String name, PhoneNumber phoneNumber, Gender gender, String note) {
         validateName(name);
         this.name = name.trim();
-        this.phoneNum = phoneNumber.value();
+        this.phoneNum = phoneNumber.getValue();
         this.gender = gender;
         this.note = note;
+        this.modifiedOn = Instant.now();
     }
 
     public void addPurchase(double amount, Instant purchasedAt) {

@@ -1,14 +1,17 @@
 package com.sapo.customer.domain.model;
 
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Embeddable
-public record PhoneNumber(String value) {
-    private static final String REGEX = "^0[2|3|5|7|8|9][0-9]{8,9}$";
+@Getter
+@NoArgsConstructor
+public class PhoneNumber {
 
-    public PhoneNumber {
-        if (value == null || !value.matches(REGEX)) {
-            throw new RuntimeException("Invalid phone number");
-        }
+    @Column(name = "phone_num", nullable = false, length = 12)
+    private String value;
+
+    public PhoneNumber(String value) {
+        this.value = value;
     }
 }
